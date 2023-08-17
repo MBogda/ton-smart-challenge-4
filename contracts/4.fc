@@ -37,7 +37,7 @@
   while (~ answer_builders.null?()) {
     cell last_answer = answer_bd.end_cell();
     (answer_bd, answer_builders) = uncons(answer_builders);
-    answer_bd.store_ref(last_answer);
+    answer_bd = answer_bd.store_ref(last_answer);
   }
 
   return answer_bd.end_cell();
@@ -71,7 +71,7 @@
   while (~ answer_builders.null?()) {
     cell last_answer = answer_bd.end_cell();
     (answer_bd, answer_builders) = uncons(answer_builders);
-    answer_bd.store_ref(last_answer);
+    answer_bd = answer_bd.store_ref(last_answer);
   }
 
   return answer_bd.end_cell();

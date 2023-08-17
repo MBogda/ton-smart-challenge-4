@@ -56,4 +56,18 @@ describe('Task4', () => {
         const result = await task4.getCaesarCipherDencrypt(24, 'yza');
         expect(result).toEqualCell(Task4.cellFromString('abc'));
     })
+
+    it('(encrypt) 2 cells', async () => {
+        const init = 'a'.repeat(123) + 'b'
+        const expected = 'b'.repeat(123) + 'c'
+        const result = await task4.getCaesarCipherEncrypt(1, init);
+        expect(result).toEqualCell(Task4.cellFromString(expected));
+    })
+
+    it('(encrypt) 3 cells', async () => {
+        const init = 'a'.repeat(123) + 'b'.repeat(127) + 'c'
+        const expected = 'b'.repeat(123) + 'c'.repeat(127) + 'd'
+        const result = await task4.getCaesarCipherEncrypt(1, init);
+        expect(result).toEqualCell(Task4.cellFromString(expected));
+    })
 });
