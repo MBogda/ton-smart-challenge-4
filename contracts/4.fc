@@ -12,9 +12,9 @@
 ;; testable
 (cell) caesar_cipher_encrypt(int shift, cell text) method_id {
   slice text_sl = text.begin_parse();
+  text_sl~load_uint(32);
   builder answer_bd = begin_cell()
           .store_uint(0, 32);
-  text_sl~load_uint(32);
 
   while (~ text_sl.slice_data_empty?()) {
     int symbol = text_sl~load_uint(8);
@@ -25,7 +25,7 @@
         symbol = (symbol - 97 + shift) % 26 + 65;
       }
     }
-    answer_bd.store_uint(symbol, 8);
+    answer_bd~store_uint(symbol, 8);
   }
 
   return answer_bd.end_cell();
@@ -34,9 +34,9 @@
 ;; testable
 (cell) caesar_cipher_decrypt(int shift, cell text) method_id {
   slice text_sl = text.begin_parse();
+  text_sl~load_uint(32);
   builder answer_bd = begin_cell()
           .store_uint(0, 32);
-  text_sl~load_uint(32);
 
   while (~ text_sl.slice_data_empty?()) {
     int symbol = text_sl~load_uint(8);
@@ -47,7 +47,7 @@
         symbol = (symbol - 97 - shift) % 26 + 65;
       }
     }
-    answer_bd.store_uint(symbol, 8);
+    answer_bd~store_uint(symbol, 8);
   }
 
   return answer_bd.end_cell();
