@@ -37,15 +37,23 @@ describe('Task4', () => {
         // blockchain and task4 are ready to use
     });
 
-    it('abc -> bcd', async () => {
+    it('(encrypt) abc -> bcd', async () => {
         const result = await task4.getCaesarCipherEncrypt(1, 'abc');
         expect(result).toEqualCell(Task4.cellFromString('bcd'));
     })
 
-    // it('tmp', async () => {
-    //     const a = stringToCell('a');
-    //     // const b = beginCell().storeUint(0, 32).storeUint(97, 8).endCell();
-    //     const b = beginCell().storeUint(97, 8).endCell();
-    //     expect(b).toEqualCell(a);
-    // })
+    it('(decrypt) abc -> bcd', async () => {
+        const result = await task4.getCaesarCipherDencrypt(1, 'bcd');
+        expect(result).toEqualCell(Task4.cellFromString('abc'));
+    })
+
+    it('(encrypt) abc -> yza', async () => {
+        const result = await task4.getCaesarCipherEncrypt(24, 'abc');
+        expect(result).toEqualCell(Task4.cellFromString('yza'));
+    })
+
+    it('(decrypt) abc -> yza', async () => {
+        const result = await task4.getCaesarCipherDencrypt(24, 'yza');
+        expect(result).toEqualCell(Task4.cellFromString('abc'));
+    })
 });

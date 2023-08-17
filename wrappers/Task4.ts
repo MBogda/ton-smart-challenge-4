@@ -36,6 +36,13 @@ export class Task4 implements Contract {
         return stack.readCell();
     }
 
+    async getCaesarCipherDencrypt(provider: ContractProvider, shift: number, text: string): Promise<Cell> {
+        const { stack } = await provider.get('caesar_cipher_decrypt', [
+            { type: 'int', value: BigInt(shift) }, { type: "cell", cell: Task4.cellFromString(text) }
+        ])
+        return stack.readCell();
+    }
+
     static cellFromString(str: string): Cell {
         const builder = beginCell().storeUint(0, 32);
         writeString(str, builder);
