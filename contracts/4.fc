@@ -15,8 +15,14 @@
   text_sl~load_uint(32);
   builder answer_bd = begin_cell()
           .store_uint(0, 32);
+  tuple answer_builders = null();
 
-  while (~ text_sl.slice_data_empty?()) {
+  while (~ text_sl.slice_empty?()) {
+    if (text_sl.slice_data_empty?()) {
+      text_sl = text_sl~load_ref().begin_parse();
+      answer_builders = cons(answer_bd, answer_builders);
+      answer_bd = begin_cell();
+    }
     int symbol = text_sl~load_uint(8);
     if ((symbol >= 65) & (symbol <= 90)) {
       symbol = (symbol - 65 + shift) % 26 + 65;
@@ -28,6 +34,12 @@
     answer_bd~store_uint(symbol, 8);
   }
 
+  while (~ answer_builders.null?()) {
+    cell last_answer = answer_bd.end_cell();
+    (answer_bd, answer_builders) = uncons(answer_builders);
+    answer_bd.store_ref(last_answer);
+  }
+
   return answer_bd.end_cell();
 }
 
@@ -37,8 +49,14 @@
   text_sl~load_uint(32);
   builder answer_bd = begin_cell()
           .store_uint(0, 32);
+  tuple answer_builders = null();
 
-  while (~ text_sl.slice_data_empty?()) {
+  while (~ text_sl.slice_empty?()) {
+    if (text_sl.slice_data_empty?()) {
+      text_sl = text_sl~load_ref().begin_parse();
+      answer_builders = cons(answer_bd, answer_builders);
+      answer_bd = begin_cell();
+    }
     int symbol = text_sl~load_uint(8);
     if ((symbol >= 65) & (symbol <= 90)) {
       symbol = (symbol - 65 - shift) % 26 + 65;
@@ -48,6 +66,12 @@
       }
     }
     answer_bd~store_uint(symbol, 8);
+  }
+
+  while (~ answer_builders.null?()) {
+    cell last_answer = answer_bd.end_cell();
+    (answer_bd, answer_builders) = uncons(answer_builders);
+    answer_bd.store_ref(last_answer);
   }
 
   return answer_bd.end_cell();
