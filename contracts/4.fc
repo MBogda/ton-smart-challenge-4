@@ -22,7 +22,7 @@
       symbol = (symbol - 65 + shift) % 26 + 65;
     } else {
       if ((symbol >= 97) & (symbol <= 122)) {
-        symbol = (symbol - 97 + shift) % 26 + 65;
+        symbol = (symbol - 97 + shift) % 26 + 97;
       }
     }
     answer_bd~store_uint(symbol, 8);
@@ -44,7 +44,7 @@
       symbol = (symbol - 65 - shift) % 26 + 65;
     } else {
       if ((symbol >= 97) & (symbol <= 122)) {
-        symbol = (symbol - 97 - shift) % 26 + 65;
+        symbol = (symbol - 97 - shift) % 26 + 97;
       }
     }
     answer_bd~store_uint(symbol, 8);
