@@ -35,4 +35,9 @@ describe('Task4', () => {
         // the check is done inside beforeEach
         // blockchain and task4 are ready to use
     });
+
+    it('abc -> bcd', async () => {
+        const result = await task4.getCaesarCipherEncrypt(1, 'abc');
+        expect(result).toEqual('bcd');
+    })
 });
