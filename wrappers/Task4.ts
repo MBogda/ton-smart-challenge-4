@@ -1,5 +1,6 @@
 import { Address, beginCell, Cell, Contract, contractAddress, ContractProvider, Sender, SendMode } from 'ton-core';
 import { stringToCell } from "ton-core/dist/boc/utils/strings";
+import {writeString} from "ton-core/dist/boc/utils/strings";
 
 export type Task4Config = {};
 
@@ -28,12 +29,16 @@ export class Task4 implements Contract {
         });
     }
 
-    async getCaesarCipherEncrypt(provider: ContractProvider, shift: number, text: string) {
+    async getCaesarCipherEncrypt(provider: ContractProvider, shift: number, text: string): Promise<Cell> {
         const { stack } = await provider.get('caesar_cipher_encrypt', [
-            { type: 'int', value: BigInt(shift) }, { type: "cell", cell: stringToCell(text) }
+            { type: 'int', value: BigInt(shift) }, { type: "cell", cell: Task4.cellFromString(text) }
         ])
-        return {
-            value: stack.readString()
-        }
+        return stack.readCell();
+    }
+
+    static cellFromString(str: string): Cell {
+        const builder = beginCell().storeUint(0, 32);
+        writeString(str, builder);
+        return builder.endCell();
     }
 }

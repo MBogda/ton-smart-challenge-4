@@ -1,8 +1,9 @@
 import { Blockchain, SandboxContract } from '@ton-community/sandbox';
-import { Cell, toNano } from 'ton-core';
+import {beginCell, Cell, toNano} from 'ton-core';
 import { Task4 } from '../wrappers/Task4';
 import '@ton-community/test-utils';
 import { compile } from '@ton-community/blueprint';
+import {stringToCell} from "ton-core/dist/boc/utils/strings";
 
 describe('Task4', () => {
     let code: Cell;
@@ -38,6 +39,13 @@ describe('Task4', () => {
 
     it('abc -> bcd', async () => {
         const result = await task4.getCaesarCipherEncrypt(1, 'abc');
-        expect(result).toEqual('bcd');
+        expect(result).toEqualCell(Task4.cellFromString('bcd'));
     })
+
+    // it('tmp', async () => {
+    //     const a = stringToCell('a');
+    //     // const b = beginCell().storeUint(0, 32).storeUint(97, 8).endCell();
+    //     const b = beginCell().storeUint(97, 8).endCell();
+    //     expect(b).toEqualCell(a);
+    // })
 });
