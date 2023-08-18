@@ -69,4 +69,37 @@ describe('Task5', () => {
         expect(result.value.remaining).toEqual(1);
         expect(result.value.readNumber()).toEqual(2);
     })
+
+    it('0, 5 -> [0, 1, 1, 2, 3]]', async () => {
+        const result = await task5.getFibonacciSequence(0, 5);
+        expect(result.value.remaining).toEqual(5);
+        expect(result.value.readNumber()).toEqual(0);
+        expect(result.value.readNumber()).toEqual(1);
+        expect(result.value.readNumber()).toEqual(1);
+        expect(result.value.readNumber()).toEqual(2);
+        expect(result.value.readNumber()).toEqual(3);
+    })
+
+    it('4, 5 -> [3, 5, 8, 13, 21]]', async () => {
+        const result = await task5.getFibonacciSequence(4, 5);
+        expect(result.value.remaining).toEqual(5);
+        expect(result.value.readNumber()).toEqual(3);
+        expect(result.value.readNumber()).toEqual(5);
+        expect(result.value.readNumber()).toEqual(8);
+        expect(result.value.readNumber()).toEqual(13);
+        expect(result.value.readNumber()).toEqual(21);
+    })
+
+    it('370, 1 -> [94611056096305838013295371573764256526437182762229865607320618320601813254535]]', async () => {
+        const result = await task5.getFibonacciSequence(370, 1);
+        expect(result.value.remaining).toEqual(1);
+        expect(result.value.readBigNumber()).toEqual(BigInt("94611056096305838013295371573764256526437182762229865607320618320601813254535"));
+    })
+
+    it('369, 2 -> [58472848379039952684853851736901133239741266891456844557261755914039063645794, 94611056096305838013295371573764256526437182762229865607320618320601813254535]]', async () => {
+        const result = await task5.getFibonacciSequence(369, 2);
+        expect(result.value.remaining).toEqual(2);
+        expect(result.value.readBigNumber()).toEqual(BigInt("58472848379039952684853851736901133239741266891456844557261755914039063645794"));
+        expect(result.value.readBigNumber()).toEqual(BigInt("94611056096305838013295371573764256526437182762229865607320618320601813254535"));
+    })
 });
