@@ -9,38 +9,33 @@
 () recv_internal() {
 }
 
+(cell) encrypt_recursively(int shift, slice text_sl, builder answer_bd) inline_ref {
+  while (~ text_sl.slice_data_empty?()) {
+    int symbol = text_sl~load_uint(8);
+    if ((symbol >= 65) & (symbol <= 90)) {
+      symbol = (symbol - 65 + shift) % 26 + 65;
+    }
+    if ((symbol >= 97) & (symbol <= 122)) {
+      symbol = (symbol - 97 + shift) % 26 + 97;
+    }
+    answer_bd~store_uint(symbol, 8);
+  }
+  if (~ text_sl.slice_refs_empty?()) {
+    answer_bd = answer_bd.store_ref(
+      encrypt_recursively(shift, text_sl~load_ref().begin_parse(), begin_cell())
+    );
+  }
+  return answer_bd.end_cell();
+}
+
 ;; testable
 (cell) caesar_cipher_encrypt(int shift, cell text) method_id {
   slice text_sl = text.begin_parse();
   text_sl~load_uint(32);
   builder answer_bd = begin_cell()
           .store_uint(0, 32);
-  tuple answer_builders = null();
 
-  while (~ text_sl.slice_empty?()) {
-    if (text_sl.slice_data_empty?()) {
-      text_sl = text_sl~load_ref().begin_parse();
-      answer_builders = cons(answer_bd, answer_builders);
-      answer_bd = begin_cell();
-    }
-    int symbol = text_sl~load_uint(8);
-    if ((symbol >= 65) & (symbol <= 90)) {
-      symbol = (symbol - 65 + shift) % 26 + 65;
-    } else {
-      if ((symbol >= 97) & (symbol <= 122)) {
-        symbol = (symbol - 97 + shift) % 26 + 97;
-      }
-    }
-    answer_bd~store_uint(symbol, 8);
-  }
-
-  while (~ answer_builders.null?()) {
-    cell last_answer = answer_bd.end_cell();
-    (answer_bd, answer_builders) = uncons(answer_builders);
-    answer_bd = answer_bd.store_ref(last_answer);
-  }
-
-  return answer_bd.end_cell();
+  return encrypt_recursively(shift, text_sl, answer_bd);
 }
 
 ;; testable
@@ -49,30 +44,6 @@
   text_sl~load_uint(32);
   builder answer_bd = begin_cell()
           .store_uint(0, 32);
-  tuple answer_builders = null();
 
-  while (~ text_sl.slice_empty?()) {
-    if (text_sl.slice_data_empty?()) {
-      text_sl = text_sl~load_ref().begin_parse();
-      answer_builders = cons(answer_bd, answer_builders);
-      answer_bd = begin_cell();
-    }
-    int symbol = text_sl~load_uint(8);
-    if ((symbol >= 65) & (symbol <= 90)) {
-      symbol = (symbol - 65 - shift) % 26 + 65;
-    } else {
-      if ((symbol >= 97) & (symbol <= 122)) {
-        symbol = (symbol - 97 - shift) % 26 + 97;
-      }
-    }
-    answer_bd~store_uint(symbol, 8);
-  }
-
-  while (~ answer_builders.null?()) {
-    cell last_answer = answer_bd.end_cell();
-    (answer_bd, answer_builders) = uncons(answer_builders);
-    answer_bd = answer_bd.store_ref(last_answer);
-  }
-
-  return answer_bd.end_cell();
+  return encrypt_recursively(- shift, text_sl, answer_bd);
 }
