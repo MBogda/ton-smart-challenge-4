@@ -18,6 +18,26 @@
 
 ;; testable
 (tuple) fibonacci_sequence (int n, int k) method_id {
-  return null();
-}
+  if (k == 0) {
+    return null();
+  }
 
+  int fib-1 = 1;  ;; fibonacci(-1)
+  int fib = 0;    ;; fibonacci(0)
+  while (n > 0) {
+    (fib, fib-1) = (fib + fib-1, fib);
+    n -= 1;
+  }
+
+  tuple answer = single(fib);
+  if (k == 1) {
+    return answer;
+  }
+
+  while (k > 1) {
+    (fib, fib-1) = (fib + fib-1, fib);
+    answer = tpush(answer, fib);
+    k -= 1;
+  }
+  return answer;
+}
