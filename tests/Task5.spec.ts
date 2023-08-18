@@ -1,5 +1,5 @@
 import { Blockchain, SandboxContract } from '@ton-community/sandbox';
-import { Cell, toNano } from 'ton-core';
+import {Cell, toNano, TupleBuilder} from 'ton-core';
 import { Task5 } from '../wrappers/Task5';
 import '@ton-community/test-utils';
 import { compile } from '@ton-community/blueprint';
@@ -35,4 +35,38 @@ describe('Task5', () => {
         // the check is done inside beforeEach
         // blockchain and task5 are ready to use
     });
+
+    it('0, 0 -> []]', async () => {
+        const result = await task5.getFibonacciSequence(0, 0);
+        expect(result.value.remaining).toEqual(0);
+    })
+
+    it('1, 0 -> []]', async () => {
+        const result = await task5.getFibonacciSequence(1, 0);
+        expect(result.value.remaining).toEqual(0);
+    })
+
+    it('0, 1 -> [0]]', async () => {
+        const result = await task5.getFibonacciSequence(0, 1);
+        expect(result.value.remaining).toEqual(1);
+        expect(result.value.readNumber()).toEqual(0);
+    })
+
+    it('1, 1 -> [1]]', async () => {
+        const result = await task5.getFibonacciSequence(1, 1);
+        expect(result.value.remaining).toEqual(1);
+        expect(result.value.readNumber()).toEqual(1);
+    })
+
+    it('2, 1 -> [1]]', async () => {
+        const result = await task5.getFibonacciSequence(2, 1);
+        expect(result.value.remaining).toEqual(1);
+        expect(result.value.readNumber()).toEqual(1);
+    })
+
+    it('3, 1 -> [2]]', async () => {
+        const result = await task5.getFibonacciSequence(3, 1);
+        expect(result.value.remaining).toEqual(1);
+        expect(result.value.readNumber()).toEqual(2);
+    })
 });
